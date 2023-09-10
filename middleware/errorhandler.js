@@ -1,4 +1,4 @@
-const { validationError } = require("joi");
+const { ValidationError } = require("joi");
 
 const errorHandler = (error, req, res, next) => {
   //default error
@@ -6,9 +6,10 @@ const errorHandler = (error, req, res, next) => {
   let data = {
     message: "internal server error",
   };
-  if (error instanceof validationError) {
-    status = error.status;
+  if (error instanceof ValidationError) {
+    status = 401;
     data.message = error.message;
+
     return res.status(status).json(data);
   }
 
@@ -23,4 +24,3 @@ const errorHandler = (error, req, res, next) => {
   return res.status(status).json(data);
 };
 module.exports = errorHandler;
- 

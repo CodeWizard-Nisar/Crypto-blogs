@@ -9,7 +9,7 @@ router.get("/test", (req, res) => res.json({ msg: "working!" }));
 //login
 router.post("/login", authController.login);
 // register
-router.post("/reister", authController.register);
+router.post("/register", authController.register);
 
 //logout
 //refresh
