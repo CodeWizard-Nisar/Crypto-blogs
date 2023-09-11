@@ -1,6 +1,8 @@
 const Joi = require("joi");
-const User = require("../Models/users");
+const User = require("../Models/user");
 const bcrypt = require("bcryptjs");
+const UserDto = require("../dto/user");
+const UserDTO = require("../dto/user");
 
 const passwordPattern =
   /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=!])(?!.*\s).{8,16}$/;
@@ -60,10 +62,50 @@ const authController = {
     const user = await userToRegister.save();
 
     //6. response send
-    return res.status(201).json({ user });
+    const userDto = new UserDTO(user);
+    return res.status(201).json({ user: userDto });
   },
 
-  async login() {},
+  async login(req, res, next) {
+    const userLoginSchema = Joi.object({
+      username: Joi.string().min(5).max(30).required(),
+      password: Joi.string().pattern(passwordPattern),
+    });
+    const { error } = userLoginSchema.validate(req.body);
+    if (error) {
+      return next(error);
+    }
+    const { username, password } = req.body;
+
+    //const username = req.body.username;
+    let user;
+
+    try {
+      //match usernae
+      user = await User.findOne({ username });
+      if (!user) {
+        const error = {
+          status: 401,
+          message: "User Not Found",
+        };
+        return next(error);
+      }
+      //match password
+      //req.body.password
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        const error = {
+          status: 401,
+          message: "invalid password",
+        };
+        return next(error);
+      }
+    } catch (error) {
+      return next(error);
+    }
+    const userDto = new UserDTO(user);
+    return res.status(200).json({ user: userDto });
+  },
 };
 
 module.exports = authController;
