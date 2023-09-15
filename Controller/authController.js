@@ -1,8 +1,8 @@
 const Joi = require("joi");
 const User = require("../Models/user");
 const bcrypt = require("bcryptjs");
-const UserDto = require("../dto/user");
 const UserDTO = require("../dto/user");
+const JWTService = require("../services/JWTService");
 
 const passwordPattern =
   /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=!])(?!.*\s).{8,16}$/;
@@ -53,18 +53,46 @@ const authController = {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     //store user data in database
-    const userToRegister = new User({
-      username,
-      name,
-      email,
-      password: hashedPassword,
+    let accessToken;
+    let refreshToken;
+    let user;
+    try {
+      const userToRegister = new User({
+        username,
+        name,
+        email,
+        password: hashedPassword,
+      });
+      user = await userToRegister.save();
+      //token genration
+      accessToken = JWTService.signAccessToken(
+        { _id: user._id, username: user.email },
+        "30m"
+      );
+
+      refreshToken = JWTService.signRefreshToken({ _id: user._id }, "60min");
+    } catch (error) {
+      return next(error);
+    }
+    res.cookie("accessToken", accessToken, {
+      maxAge: 1000 * 60 * 60 * 24,
+      httpOnly: true,
     });
-    const user = await userToRegister.save();
+
+    //store refresh token in database
+    JWTService.storeRefreshToken(refreshToken, user._id);
+    //send token in cookies
+    res.cookie("refreshToken", refreshToken, {
+      maxAge: 1000 * 60 * 60 * 24,
+      httpOnly: true,
+    });
 
     //6. response send
     const userDto = new UserDTO(user);
     return res.status(201).json({ user: userDto });
   },
+
+  //Login function
 
   async login(req, res, next) {
     const userLoginSchema = Joi.object({
