@@ -3,7 +3,7 @@ const User = require("../Models/user");
 const bcrypt = require("bcryptjs");
 const UserDTO = require("../dto/user");
 const JWTService = require("../services/JWTService");
-const { ACCESS_TOKEN_SECRET } = require("../config");
+const RefreshToken = require("../Models/token");
 
 const passwordPattern =
   /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=!])(?!.*\s).{8,16}$/;
@@ -67,10 +67,7 @@ const authController = {
       user = await userToRegister.save();
 
       //token genration
-      accessToken = JWTService.signAccessToken(
-        { _id: user._id, username: user.email },
-        "30m"
-      );
+      accessToken = JWTService.signAccessToken({ _id: user._id }, "30m");
 
       refreshToken = JWTService.signRefreshToken({ _id: user._id }, "60m");
     } catch (error) {
@@ -78,7 +75,7 @@ const authController = {
     }
 
     //store refresh token in database
-    JWTService.storeRefreshToken(refreshToken, user._id);
+    await JWTService.storeRefreshToken(refreshToken, user._id);
 
     res.cookie("accessToken", accessToken, {
       maxAge: 1000 * 60 * 60 * 24,
@@ -93,7 +90,7 @@ const authController = {
 
     //6. response send
     const userDto = new UserDTO(user);
-    return res.status(201).json({ user: userDto });
+    return res.status(201).json({ user: userDto, auth: true });
   },
 
   //Login function
@@ -135,10 +132,33 @@ const authController = {
     } catch (error) {
       return next(error);
     }
-    let accessToken;
-    let refreshToken;
+
+    const accessToken = JWTService.signAccessToken({ _id: user._id }, "30m");
+    const refreshToken = JWTService.signRefreshToken({ _id: user._id }, "60m");
+
+    //update refresh token in database
+    try {
+      await RefreshToken.updateOne(
+        {
+          _id: user._id,
+        },
+        { token: refreshToken },
+        { upsert: true }
+      );
+    } catch (error) {
+      return next(error);
+    }
+
+    res.cookie("accessToken", accessToken, {
+      maxAge: 1000 * 60 * 60 * 24,
+      httpOnly: true,
+    });
+    res.cookie("refreshToken", refreshToken, {
+      maxAge: 1000 * 60 * 60 * 24,
+      httpOnly: true,
+    });
     const userDto = new UserDTO(user);
-    return res.status(200).json({ user: userDto });
+    return res.status(200).json({ user: userDto, auth: true });
   },
 };
 
