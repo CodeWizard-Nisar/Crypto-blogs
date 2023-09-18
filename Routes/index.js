@@ -6,12 +6,14 @@ router.get("/test", (req, res) => res.json({ msg: "working!" }));
 
 //user
 
+//register
+router.post("/register", authController.register);
 //login
 router.post("/login", authController.login);
-// register
-router.post("/register", authController.register);
 
 //logout
+router.post("/logout", authController.logout);
+
 //refresh
 
 //blog

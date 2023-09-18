@@ -160,6 +160,20 @@ const authController = {
     const userDto = new UserDTO(user);
     return res.status(200).json({ user: userDto, auth: true });
   },
+  async logout(req, res, next) {
+    //delete refresh token from db
+    const { refreshToken } = req.cookies;
+    try {
+      await RefreshToken.findOneAndDelete({ token: refreshToken });
+    } catch (error) {
+      return next(error);
+    }
+    //delete cookies
+    res.clearCookie("accessToken");
+    res.clearCookie("refreshToken");
+    //2/response
+    res.status(200).json({ user: null, auth: false });
+  },
 };
 
 module.exports = authController;
