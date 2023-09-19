@@ -1,7 +1,7 @@
 const express = require("express");
 const authController = require("../Controller/authController");
 const router = express.Router();
-
+const auth = require("../middleware/auth");
 router.get("/test", (req, res) => res.json({ msg: "working!" }));
 
 //user
@@ -12,9 +12,10 @@ router.post("/register", authController.register);
 router.post("/login", authController.login);
 
 //logout
-router.post("/logout", authController.logout);
+router.post("/logout", auth, authController.logout);
 
 //refresh
+router.get("/refresh", authController.refresh);
 
 //blog
 //crud
