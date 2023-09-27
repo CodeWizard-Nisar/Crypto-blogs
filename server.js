@@ -15,6 +15,8 @@ app.use(router);
 
 dbConnect();
 
+app.use("/storage", express.static("storage"));
+
 app.use(errorHandler);
 
 app.listen(PORT, console.log("Backend is running on port: ${PORT}"));
