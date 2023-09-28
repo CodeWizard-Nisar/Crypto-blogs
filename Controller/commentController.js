@@ -1,5 +1,6 @@
 const Joi = require("joi");
 const Comment = require("../Models/comment");
+const CommentDTO = require("../dto/comment");
 
 const mongodbIdPattern = /^[0-9a-fA-F]{24}$/;
 const commentController = {
@@ -37,11 +38,16 @@ const commentController = {
     const { id } = req.params;
     let comments;
     try {
-      comments = await Comment.find({ blog: id });
+      comments = await Comment.find({ blog: id }).populate("author");
     } catch (error) {
       return next(error);
     }
-    return res.status(200).json({ data: comments });
+    let commentsDto = [];
+    for (let i = 0; i < comments.length; i++) {
+      const obj = new CommentDTO(comments[i]);
+      commentsDto.push(obj);
+    }
+    return res.status(200).json({ data: commentsDto });
   },
 };
 
