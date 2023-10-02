@@ -23,3 +23,32 @@
   font-size: 22px;
   font-weight: bold;
 }
+.loginButton {
+  border-radius: 10px;
+  outline: none;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+  font-size: large;
+  font-weight: bold;
+  text-decoration: none;
+}
+.loginButton:hover {
+  color: black;
+  background: #f3f3f3;
+}
+
+.signupButton {
+  margin-left: 10px;
+  background-color: #3861fb;
+  color: white;
+  border-radius: 10px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: large;
+  font-weight: bold;
+  text-decoration: none;
+}
+.signupButton:hover {
+  background-color: red;
+}

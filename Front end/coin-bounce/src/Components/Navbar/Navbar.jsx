@@ -46,7 +46,7 @@ function Navbar() {
             isActive ? styles.activeStyle : styles.inActiveStyle
           }
         >
-          Log In
+          <button className={styles.loginButton}> Log In</button>
         </NavLink>
         <NavLink
           to="sign-up"
@@ -54,7 +54,7 @@ function Navbar() {
             isActive ? styles.activeStyle : styles.inActiveStyle
           }
         >
-          Sign Up
+          <button className={styles.signupButton}>Sign Up</button>
         </NavLink>
       </nav>
     </>
