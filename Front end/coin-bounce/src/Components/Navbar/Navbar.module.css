@@ -50,5 +50,20 @@
   text-decoration: none;
 }
 .signupButton:hover {
-  background-color: red;
+  background-color: black;
+}
+
+.signoutButton {
+  margin-left: 10px;
+  background-color: #ea3943;
+  color: white;
+  border-radius: 10px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: large;
+  font-weight: bold;
+  text-decoration: none;
+}
+.signoutbutton:hover {
+  background-color: #e01822;
 }
