@@ -69,6 +69,7 @@ function Navbar() {
           </div>
         )}
       </nav>
+      <div className={styles.separator}></div>
     </>
   );
 }

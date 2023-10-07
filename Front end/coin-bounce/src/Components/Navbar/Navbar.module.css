@@ -67,3 +67,8 @@
 .signoutbutton:hover {
   background-color: #e01822;
 }
+.separator {
+  height: 1px;
+  margin-top: 5px;
+  background: linear-gradient(to right, transparent, #9ba3c2, transparent);
+}
