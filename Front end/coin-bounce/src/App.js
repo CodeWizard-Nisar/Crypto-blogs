@@ -5,6 +5,7 @@ import Home from "./Pages/Home/Home";
 import styles from "./App.module.css";
 import Protected from "./Components/Protected/Protected";
 import Error from "./Pages/Error/Error";
+import Login from "./Pages/Login/Login";
 function App() {
   const isAuth = false;
   return (
@@ -54,7 +55,11 @@ function App() {
             <Route
               path="login"
               exact
-              element={<div className={styles.main}>login page</div>}
+              element={
+                <div className={styles.main}>
+                  <Login />
+                </div>
+              }
             />
             <Route
               path="*"
