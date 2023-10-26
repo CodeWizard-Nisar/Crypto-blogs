@@ -37,3 +37,9 @@
   font-size: 18px;
   color: pointer;
 }
+.errorMessage {
+  color: #ea3943;
+  margin: 20px 0;
+  font-size: 20px;
+  font-weight: bold;
+}
