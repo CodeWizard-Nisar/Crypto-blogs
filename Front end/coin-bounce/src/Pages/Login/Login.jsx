@@ -40,7 +40,7 @@ function Login() {
       }
     } catch (error) {
       // Handle network or server errors here
-      console.error("Login failed:", error);
+      console.error("signup failed:", error);
     }
   };
 
@@ -87,7 +87,7 @@ function Login() {
           Register
         </button>
       </span>
-      {error != "" ? <p className={styles.errorMessage}>{error}</p> : ""}
+      {error != "" ? <p className={styles.erroressage}>{error}</p> : ""}
     </div>
   );
 }
