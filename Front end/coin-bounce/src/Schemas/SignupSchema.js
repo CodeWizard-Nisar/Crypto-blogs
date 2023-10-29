@@ -22,7 +22,8 @@ const signupSchema = yup.object().shape({
   confirmPassword: yup
     .string()
     .oneOf([yup.ref("password")], "password and confirm password must be same")
-    .required("password is required"),
+    .required("confirm password is required"),
 });
 
 export default signupSchema;
+ 

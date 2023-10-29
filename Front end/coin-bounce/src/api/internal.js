@@ -26,6 +26,7 @@ export const signup = async (data) => {
   } catch (error) {
     return error;
   }
+  return response;
 };
 export const signout = async () => {
   let response;

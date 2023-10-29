@@ -93,9 +93,9 @@ function Signup() {
         value={values.password}
         onBlur={handleBlur}
         onChange={handleChange}
-        placeholder="password"
+        placeholder="password 'use a strong password'"
         error={errors.password && touched.password ? 1 : undefined}
-        errormessag={errors.password}
+        errormessage={errors.password}
       />
       <TextInput
         type="password"
@@ -107,7 +107,7 @@ function Signup() {
         error={
           errors.confirmPassword && touched.confirmPassword ? 1 : undefined
         }
-        errormessag={errors.confirmPassword}
+        errormessage={errors.confirmPassword}
       />
       <button
         className={styles.signupButton}
