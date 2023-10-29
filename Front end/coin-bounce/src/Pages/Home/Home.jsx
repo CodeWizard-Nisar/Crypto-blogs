@@ -1,13 +1,10 @@
 import { useState, useEffect } from "react";
 import { getNews } from "../../api/external";
 import styles from "./Home.module.css";
+import Loader from "../../Components/Loader/Loader";
 
 function Home() {
   const [articles, setArticles] = useState([]);
-
-  const handdleCardClick = (url) => {
-    window.open(url, "_blank"); //open in new tab
-  };
 
   useEffect(() => {
     (async function newsApiCall() {
@@ -17,6 +14,12 @@ function Home() {
     //cleanup function
     setArticles([]);
   }, []);
+  const handdleCardClick = (url) => {
+    window.open(url, "_blank"); //open in new tab
+  };
+  if (articles.length == 0) {
+    return <Loader text="homepage" />;
+  }
   return (
     <>
       <div className={styles.header}>Latest Articles</div>
