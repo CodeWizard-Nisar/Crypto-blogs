@@ -7,7 +7,7 @@ function Error() {
     <div className={styles.errorWrapper}>
       <div className={styles.errorHeader}>Error 404 - Page not found</div>
       <div className={styles.errorBody}>
-        Go Back to
+        Go Back to 
         <Link to="/" className={styles.errorLink}>
           home
         </Link>

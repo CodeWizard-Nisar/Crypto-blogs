@@ -20,27 +20,23 @@ function Login() {
       username: values.username,
       password: values.password,
     };
-    try {
-      const response = await login(data);
-      if (response.status === 200) {
-        //1. Set user
-        const user = {
-          _id: response.data.user._id,
-          email: response.data.user.email,
-          username: response.data.user.username,
-          auth: response.data.auth,
-        };
-        dispatch(setUser(user));
 
-        //2. Redirect -> homepage
-        navigate("/");
-      } else if (response.code === "ERR_BAD_REQUEST") {
-        // Display error message
-        setError(response.response.data.errormessage);
-      }
-    } catch (error) {
-      // Handle network or server errors here
-      console.error("signup failed:", error);
+    const response = await login(data);
+    if (response.status === 200) {
+      //1. Set user
+      const user = {
+        _id: response.data.user._id,
+        email: response.data.user.email,
+        username: response.data.user.username,
+        auth: response.data.auth,
+      };
+      dispatch(setUser(user));
+
+      //2. Redirect -> homepage
+      navigate("/");
+    } else if (response.code === "ERR_BAD_REQUEST") {
+      // Display error message
+      setError(response.response.data.message);
     }
   };
 
@@ -75,7 +71,16 @@ function Login() {
         error={errors.password && touched.password ? 1 : undefined}
         errormessage={errors.password}
       />
-      <button className={styles.logInButton} onClick={handleLogin}>
+      <button
+        className={styles.logInButton}
+        onClick={handleLogin}
+        disabled={
+          !values.username ||
+          !values.password ||
+          errors.username ||
+          errors.password
+        }
+      >
         Log In
       </button>
       <span>
@@ -87,7 +92,7 @@ function Login() {
           Register
         </button>
       </span>
-      {error != "" ? <p className={styles.erroressage}>{error}</p> : ""}
+      {error !== "" ? <p className={styles.errormessage}>{error}</p> : ""}
     </div>
   );
 }

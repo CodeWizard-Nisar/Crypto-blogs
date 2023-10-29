@@ -38,7 +38,7 @@ function Signup() {
       navigate("/");
     } else if (response.code === "ERR_BAD_REQUEST") {
       // Display error message
-      setError(response.response.data.errormessage);
+      setError(response.response.data.message);
     }
   };
 
@@ -55,7 +55,7 @@ function Signup() {
 
   return (
     <div className={styles.signupWrapper}>
-      <div className={styles.signupHeader}>signup</div>
+      <div className={styles.signupHeader}>Create an Account</div>
       <TextInput
         type="text"
         value={values.name}
@@ -109,17 +109,31 @@ function Signup() {
         }
         errormessag={errors.confirmPassword}
       />
-      <button className={styles.signupButton} onClick={handleSignup}>
+      <button
+        className={styles.signupButton}
+        onClick={handleSignup}
+        disabled={
+          !values.username ||
+          !values.password ||
+          !values.name ||
+          !values.confirmPassword ||
+          !values.email ||
+          errors.username ||
+          errors.password ||
+          errors.name ||
+          errors.confirmPassword ||
+          errors.email
+        }
+      >
         Sign Up
       </button>
       <span>
-        Already have an accout ?{" "}
-        <button
-          className={styles.login}
-          onClick={() => navigate("/login")}
-        ></button>
+        Already have an accout ?
+        <button className={styles.login} onClick={() => navigate("/login")}>
+          Login
+        </button>
       </span>
-      {error != "" ? <p className={styles.errorMessage}>{error}</p> : ""}
+      {error !== "" ? <p className={styles.errorMessage}>{error}</p> : ""}
     </div>
   );
 }

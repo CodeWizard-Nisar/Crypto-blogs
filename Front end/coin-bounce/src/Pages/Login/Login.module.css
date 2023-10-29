@@ -30,14 +30,17 @@
   margin: 10px;
   margin-top: 30px;
 }
+.logInButton:disabled {
+  background-color: #6ebdfc;
+}
 .createAccount {
   margin-top: 80px;
   margin-left: 10px;
-  color: 16c784;
+  color: #16c784;
   font-size: 18px;
   color: pointer;
 }
-.errorMessage {
+.errormessage {
   color: #ea3943;
   margin: 20px 0;
   font-size: 20px;
