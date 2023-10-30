@@ -8,6 +8,7 @@ import Error from "./Pages/Error/Error";
 import Login from "./Pages/Login/Login";
 import { useSelector } from "react-redux";
 import Signup from "./Pages/Signup/Signup";
+import Crypto from "./Pages/Crypto/Crypto";
 function App() {
   const isAuth = useSelector((state) => state.user.auth);
   return (
@@ -28,7 +29,11 @@ function App() {
             <Route
               path="crypto"
               exact
-              element={<div className={styles.main}>Crypto page</div>}
+              element={
+                <div className={styles.main}>
+                  <Crypto></Crypto>
+                </div>
+              }
             />
             <Route
               path="blogs"
